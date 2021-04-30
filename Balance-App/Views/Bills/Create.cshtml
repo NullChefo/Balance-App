@@ -1,0 +1,38 @@
+﻿@model Balance_App.ViewModels.Bills.CreateVM
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create Bill";
+}
+
+
+<div class="status">
+    <h1>Create Bill</h1>
+
+
+</div>
+
+    <form action="/Bills/Create" method="post">
+        @Html.HiddenFor(m => m.Bill_BalanceId)
+        <div class="grid">
+            <div class="row">
+                <div class="col-1">Bill Name:</div>
+                <div class="col-2">@Html.TextBoxFor(m => m.BillName, new { @class = "form", placeholder = "Enter your bill name..." })</div>
+                <div class="col-2">@Html.ValidationMessageFor(m => m.BillName)</div>
+
+                  
+            </div>
+
+            <div class="row">
+                <div class="col-1">Bill Amount:</div>
+                <div class="col-2">@Html.TextBoxFor(m => m.BillAmount, new { @class = "form", placeholder = "000.00" })</div>
+               
+            </div>
+
+            <div class="flex-rows">
+                
+                    <input class="SubmitButton" type="submit" value="Create" />
+                    <a class="Buttoncheta" href="/Bills/Index?ParentId=@Model.Bill_BalanceId">Back</a>
+             
+            </div>
+        </div>
+    </form>

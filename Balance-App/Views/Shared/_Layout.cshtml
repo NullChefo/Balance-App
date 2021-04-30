@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewBag.Title</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <link href="~/css/style.css" rel="stylesheet" />
+
+    <link href="~/css/styles.css" rel="stylesheet1" />
+</head>
+<body>
+
+
+    <main>
+        <section class="glass">
+            <div class="dashboard">
+                <div class="user">
+                    <img src="~/content/images/avatar.png" alt="" />
+                    <h3>
+                        Hello, @(this.Context.Session.GetString("LoggedUserId") != null
+                                   ? this.Context.Session.GetString("LoggedUserUsername")
+                                   : "Anonymous")
+                    </h3>
+
+                </div>
+                <div class="links">
+
+
+
+                    <div class="link">
+                        <a href="">
+                            <img src="~/content/images/home.png" alt="" />
+                        </a>
+                        <h2> <a href="/Home/Index">HOME</a></h2>
+
+                    </div>
+
+                    <div class="link">
+
+
+
+                        <a href="/Home/Login">
+                            <img src="~/content/images/login.png" alt="user" />
+                        </a>
+
+                        @if (this.Context.Session.GetString("LoggedUserId") == null)
+                        {
+                            <a href="/Home/Login"> <h2>Login</h2>   </a>
+                        }
+                        else
+                        {
+                            <a href="/Home/Logout"> <h2>Logout</h2>   </a>
+                        }
+
+
+
+
+                    </div>
+
+
+                    <div class="link">
+                        <a href="/Balance/Index">
+                            <img src="~/content/images/wallet.png" alt="" />
+                        </a>
+                        <h2> <a href="/Balance/Index">Balance</a></h2>
+
+                    </div>
+                    
+                    <!--
+                        #TODO ADMIN GROUP AND MODERATOR GROUP 
+                    -->
+                    @if ((this.Context.Session.GetString("LoggedUserUsername") == "admin"))
+                    {
+                        <div class="link">
+                            <a href="/Users/Index">
+                                <img src="~/content/images/add.png" alt="" />
+                            </a>
+                            <h2><a href="/Users/Index">AdminPannel</a></h2>
+                        </div>
+                    }
+
+
+
+                </div>
+                <div class="pro">
+                    <h3> <a href="/Home/Login"> Join us today for free! </a></h3>
+                </div>
+            </div>
+
+            <div class="login">
+
+                @RenderBody()
+
+            </div>
+
+
+        </section>
+    </main>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+</html>
+
+
+
+

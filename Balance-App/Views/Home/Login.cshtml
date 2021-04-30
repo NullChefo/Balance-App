@@ -1,0 +1,39 @@
+﻿@model Balance_App.ViewModels.Home.LoginVM
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+
+<div class="status">
+    <h1>Login or Register</h1>
+
+
+</div>
+
+
+<form action="/Home/Login" method="post">
+    <div class="grid">
+        <div class="row">
+            <h2 class="padd"> Username: </h2>
+            <div class="col-2">@Html.TextBoxFor(m => m.Username, new { @class = "form", placeholder = "Enter your username..." })</div>
+            <div class="col-2">@Html.ValidationMessageFor(m => m.Username)</div>
+        </div>
+        <div class="row">
+            <h2 class="padd"> Password: </h2>
+            <div class="col-2">@Html.PasswordFor(m => m.Password, new { @class = "form", placeholder = "Enter your password..." })</div>
+            <div class="col-2">@Html.ValidationMessageFor(m => m.Password)</div>
+        </div>
+        <div class="row">
+            <div class="col-3">@Html.ValidationMessage("AuthenticationFailed")</div>
+
+        </div>
+        <div class="sign-up">
+            <p>Maybe new here  <a href="/Users/Create">sign up here</a> for a account </p>
+        </div>
+
+        <div class="flex-rowsmargin03">
+            <input class="SubmitButton" type="submit" value="Login" />
+        </div>
+    </div>
+</form>

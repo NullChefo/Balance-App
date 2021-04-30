@@ -1,0 +1,43 @@
+﻿@model Balance_App.ViewModels.Bills.IndexVM
+@using Balance_App.Entities;
+@{
+    ViewBag.Title = "Bill Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="status">
+    <h1>Bills Detail</h1>
+</div>
+<div class="flex-rowsmargin03">
+
+    <a href="/Bills/Create?parentId=@Model.Balance.Id"><img class="icons" src="~/content/images/add.png" /></a>
+    <a href="/Balance/Index"><img class="icons" src="~/content/images/back.png" /></a>
+
+</div>
+
+
+@foreach (Bill item in Model.Items)
+{
+    Model.TotalBillsPerBalance += item.BillAmount;
+    Model.BalanceAfterBills = (Model.Balance.BalancesAmound - item.BillAmount);
+
+    <div class="flex-colsmargin03">
+        @item.Name : @item.BillAmount
+    </div>
+
+
+    <div class="flex-rowsmargin3">
+        <a class="Buttoncheta" href="/Bills/Edit?Id=@item.Id">Edit</a>
+        <a class="Buttoncheta" href="/Bills/Delete?ParentId=@item.Id">Delete</a>
+    </div>
+}
+
+<div class="flex-.flex-rowsmargin03">
+
+    <p>Total Bill Amount : @Model.TotalBillsPerBalance</p> 
+
+    <p> Balance Amount :  @Model.Balance.BalancesAmound</p>
+
+    <p> Balance after bills : @Model.BalanceAfterBills</p> 
+</div>

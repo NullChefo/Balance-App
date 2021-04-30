@@ -1,0 +1,36 @@
+﻿@model Balance_App.ViewModels.Bills.EditVM
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Bills";
+}
+
+<div class="status">
+    <h1>Edit Bill</h1>
+
+
+</div>
+
+<form action="/Bills/Edit" method="post">
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.BalanceId)
+    <div class="grid">
+        <div class="row">
+            <div class="col-1">Bill name:</div>
+            <div class="col-2">@Html.TextBoxFor(m => m.BillName, new { @class = "form", placeholder = "Enter your balance type..." })</div>
+            <div class="col-2">@Html.ValidationMessageFor(m => m.BillName)</div>
+
+        </div>
+        <div class="row">
+            <div class="col-1">Bill Amount:</div>
+            <div class="col-2">@Html.TextBoxFor(m => m.BillAmount, new { @class = "form", placeholder = "Enter your expiration date..." })</div>
+            <div class="col-2">@Html.ValidationMessageFor(m => m.BillAmount)</div>
+        </div>
+
+        <div class="flex-rows">
+
+            <input class="SubmitButton" type="submit" value="Save" />
+            <a class="Buttoncheta" href="/Balance/Index/">Back</a>
+
+        </div>
+    </div>
+</form>

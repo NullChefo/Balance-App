@@ -1,0 +1,35 @@
+﻿@model Balance_App.ViewModels.Balances.IndexVM
+@using Balance_App.Entities;
+@{
+    ViewBag.Title = "Balance Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-rowsmargin3">
+    <a href="/Balance/Create"><img class="icons" src="~/content/images/add.png" /></a>
+    <a href="/Home/Index"><img class="icons" src="~/content/images/back.png" /></a>
+</div>
+
+    @foreach (Balance item in Model.Items)
+    {
+<div class="card">
+    <div class="row">
+        <div class="col-2">Name/Type :   @item.NameOrType</div>
+        <div class="col-2">Expiration Date : @item.ExDate</div>
+        <div class="col-2">Amount : @item.BalancesAmound</div>
+
+    </div>
+
+    
+
+    <div class="flex-rows">
+        <a class="Buttoncheta" href="/Balance/Edit?id=@item.Id">Edit</a>
+        <a class="Buttoncheta" href="/Bills/Index?parentId=@item.Id">Details</a>
+        <a class="Buttoncheta" href="/Balance/Delete?Id=@item.Id">Delete</a>
+       <a class="Buttoncheta" href="/Bills/Create?parentId=@item.Id">Create Bill</a>
+      <a class="Buttoncheta" href="/Balance/Share?id=@item.Id">Share</a>
+    </div>
+</div>
+    }
+
+

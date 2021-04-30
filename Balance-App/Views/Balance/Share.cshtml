@@ -1,0 +1,68 @@
+﻿@model Balance_App.ViewModels.Balance.ShareVM
+@using Balance_App.Entities;
+@{
+    ViewBag.Title = "Share Balance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="grid">
+    <row class="col-3">
+        <h1>Share Balance:</h1>
+        <span class="b">Balance Name: </span> @Model.Balance.NameOrType <br />
+        <span class="b">Ex. Date: </span> @Model.Balance.ExDate <br />
+        <span class="b">Balance Amount: </span> @Model.Balance.BalancesAmound
+    </row>
+
+    @foreach (User item in Model.SharedWith)
+    {
+        <p>@item.Id</p>
+        <p>@item.Password</p>
+        <div class="row">
+            <div class="col-2"> First Name : @item.FirstName</div>
+            <div class="col-2">Last Name :@item.LastName</div>
+            <div class="col-2">Username :@item.Username</div>
+            <div class="col-2">
+                <a href="/Balance/RevokeAccess?UserId=@item.Id&BalanceId=@Model.Balance.Id">Remove access</a>
+            </div>
+        </div>
+    }
+
+
+
+
+    <form action="/Balance/Share" method="post">
+        <input type="hidden" name="BalanceId" value="@Model.Balance.Id" />
+
+
+        <div class="row">
+            <h2>Shere Balance:</h2>
+        </div>
+
+        @foreach (User item in Model.Users)
+        {
+            <div class="row">
+                <div class="col-3">
+                    <input id="lblUser@(item.Id)" type="checkbox" name="UserIds" value="@item.Id " />
+                    <label for="lblUser@(item.Id)">@item.FirstName @item.LastName</label>
+
+                </div>
+            </div>
+        }
+
+
+
+
+        <div class="row">
+            <div class="col-2">
+                <input class="SubmitButton" type="submit" value="Share" />
+            </div>
+        </div>
+    </form>
+
+
+    <div class="row">
+        <h2>This balance is shared with:</h2>
+    </div>
+
+</div>
+

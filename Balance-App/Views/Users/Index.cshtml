@@ -1,0 +1,28 @@
+﻿@model Balance_App.ViewModels.Users.IndexVM
+@using Balance_App.Entities;
+@{
+    ViewBag.Title = "Users Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<a href="/Users/Create"><img class="icons" src="~/content/images/add.png" /></a>
+
+
+    @foreach (User item in Model.Items)
+    {
+        <div class="card">
+        <div class="row">
+            <div class="col-2">Username :  @item.Username</div>
+            <div class="col-2">First Name : @item.FirstName</div>
+            <div class="col-2">Last Name : @item.LastName</div>
+            <div class="flex-rows">
+                <a class="Buttoncheta" href="/Users/Edit?id=@item.Id">Edit Account</a>
+                <a class="Buttoncheta" href="/Users/Delete?id=@item.Id">Delete Account</a>
+            </div>
+        </div>
+            </div>
+    }
+
+

@@ -1,0 +1,40 @@
+﻿@model Balance_App.ViewModels.Balances.CreateVM
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create Balance";
+}
+
+<div class="status">
+    <h1>Create Balance</h1>
+
+
+</div>
+
+
+
+   
+    <form action="/Balance/Create" method="post">
+        <div class="grid">
+            <div class="row">
+                <div class="col-1">Name or type of your balance:</div>
+                <div class="col-2">@Html.TextBoxFor(m => m.NameOrType, new { @class = "form", placeholder = "MasterCard" })</div>
+                <div class="col-2">@Html.ValidationMessageFor(m => m.NameOrType)</div>
+            </div>
+            <div class="row">
+                <div class="col-1">Expiration date:</div>
+                <div class="col-2">@Html.TextBoxFor(m => m.ExDate, new { @class = "form", placeholder = "11/21." })</div>
+                <div class="col-2">@Html.ValidationMessageFor(m => m.ExDate)</div>
+            </div>
+            <div class="row">
+                <div class="col-1">Balance Amount:</div>
+                <div class="col-2">@Html.TextBoxFor(m => m.BalanceAmount, new { @class = "form", placeholder = "000.00" })</div>
+                <div class="col-2">@Html.ValidationMessageFor(m => m.BalanceAmount)</div>
+            </div>
+            <div class="flex-rows">
+                
+                    <input class="SubmitButton" type="submit" value="Create" />
+                    <a class="Buttoncheta" href="/Balance/Index">Back</a>
+               
+            </div>
+        </div>
+    </form>
