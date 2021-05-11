@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Balance_App.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Balance_App.DataAccess
 {
@@ -21,15 +18,19 @@ namespace Balance_App.DataAccess
             UserToBalances = this.Set<UserToBalance>();
         }
 
+/*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=localhost;Database=BalanceProjectDB;User Id=applogin;Password=12344321;");
+*/
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseNpgsql("Host=localhost:5432;Database=balanceapp;Username=applogin;Password=1234");
 
 
-        }
+    
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
             modelBuilder.Entity<User>().HasData(
                 new User()
                 {
@@ -41,4 +42,5 @@ namespace Balance_App.DataAccess
                 });
         }
     }
+
 }
