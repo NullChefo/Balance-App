@@ -8,6 +8,8 @@ namespace Balance_App.DataAccess
 {
     public class MyDbContext : DbContext
     {
+        private string connectionString = "Host=localhost:5432;Database=balanceapp;Username=applogin;Password=1234";
+        
         public DbSet<User> Users { get; set; }
         public DbSet<Balance> Balance { get; set; }
         public DbSet<Bill> Bills { get; set; }
@@ -21,15 +23,11 @@ namespace Balance_App.DataAccess
         }
 
 
-     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    IConfigurationRoot configuration = new ConfigurationBuilder()
-        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-        .AddJsonFile("appsettings.json")
-        .Build();
-    optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-    /* optionsBuilder.UseSqlServer(configuration.GetConnectionString("MsSql"));  */
-    }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(connectionString);
+           
+        }
 
     
 
