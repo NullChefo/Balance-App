@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Balance_App.Entities;
+using Microsoft.Extensions.Configuration;
 
 
 namespace Balance_App.DataAccess
@@ -18,14 +20,16 @@ namespace Balance_App.DataAccess
             UserToBalances = this.Set<UserToBalance>();
         }
 
-/*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=BalanceProjectDB;User Id=applogin;Password=12344321;");
-*/
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost:5432;Database=balanceapp;Username=applogin;Password=1234");
 
+     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    IConfigurationRoot configuration = new ConfigurationBuilder()
+        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+        .AddJsonFile("appsettings.json")
+        .Build();
+    optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+    /* optionsBuilder.UseSqlServer(configuration.GetConnectionString("MsSql"));  */
+    }
 
     
 
