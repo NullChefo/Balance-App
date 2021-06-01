@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 6.0.100-preview.3.21202.5
     - name: Restore dependencies
-      run: dotnet restore ./src/Balance-App/
+      run: dotnet restore ./src/
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./src/ --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./src/ --no-build --verbosity normal
