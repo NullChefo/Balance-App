@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 6.0.100-preview.3.21202.5
     - name: Restore dependencies
-      run: dotnet restore ./src/Balance-App/Balance-App.csproj
+      run: dotnet restore ./src/Balance-App/
     - name: Build
       run: dotnet build --no-restore
     - name: Test
