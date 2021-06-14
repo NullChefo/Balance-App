@@ -5,7 +5,7 @@ creating the bills for this balance. The back end part uses .NET 6 and the front
 
 
 # Database schema
-![Balance-App Database Schema Diagram](./docs/BalanceAppDatabaseSchemaDiagram.png)
+![Balance-App Database Schema Diagram](./img/0.png)
 
 
 # Images of the website
