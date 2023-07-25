@@ -1,0 +1,164 @@
+---
+version: '3'
+services:
+
+  ## Postgres database
+  postgres:
+    image: postgres:15.2-alpine
+    container_name: postgres_balanceapp
+    restart: always
+    environment:
+      - POSTGRES_USER=balanceapp_user
+      - POSTGRES_PASSWORD=balanceapp_password
+      - POSTGRES_DB=balanceapp_db
+    ports:
+      - '5432:5432'
+  #    volumes:
+  #      - db:/var/lib/postgresql/data
+
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq_balanceapp
+    restart: always
+    expose:
+      - "5672"
+      - "15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=balanceapp_user
+      - RABBITMQ_DEFAULT_PASS=balanceapp_password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    #    volumes:
+    #      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+    #      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+
+  # ---------------------------END-MY-IMPLEMENTATION-----------------
+
+  #  SOURCE https://www.youtube.com/watch?v=UXcCHX_ymag
+  #  SOURCE https://github.com/ThomasVitale/spring-cloud-gateway-resilience-security-observability/tree/main
+
+
+
+
+   ## Zipkin
+  zipkin:
+     image: openzipkin/zipkin
+     container_name: zipkin_balanceapp
+     expose:
+       - "9411"
+     ports:
+       - "9411:9411"
+     restart: always
+
+
+  prometheus:
+    #   image: grafana/grafana:9.3.6
+    image: prom/prometheus:latest
+    container_name: prometheus_balanceapp
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./platform/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+
+  tempo:
+    # image: grafana/tempo:2.0.0
+    image: grafana/tempo:latest
+    container_name: tempo_balanceapp
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"     # Tempo
+      - "4317:4317"     # OTLP
+      - "9411:9411"     # Zipkin
+    volumes:
+      - ./platform/tempo/tempo.yml:/etc/tempo-config.yml
+    restart: unless-stopped
+
+  # Observability
+  grafana:
+    # image: grafana/grafana:9.3.6
+    image: grafana/grafana:latest
+    container_name: grafana_balanceapp
+    depends_on:
+      - loki
+      - prometheus
+      - tempo
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_SECURITY_ADMIN_USER=balanceapp_admin
+      - GF_SECURITY_ADMIN_PASSWORD=balanceapp_password
+    volumes:
+      - ./platform/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./platform/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./platform/grafana/grafana.ini:/etc/grafana/grafana.ini
+  #    restart: unless-stopped
+
+  loki:
+    # image: grafana/loki:2.7.3
+    image: grafana/loki:latest
+    container_name: loki_balanceapp
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    restart: unless-stopped
+
+  redis:
+    # image: redis:7
+    image: redis:alpine
+    container_name: redis_balanceapp
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+
+# --------------------- Example for services -------------------
+
+
+  # ## Gateway-Service Docker Compose Config
+  # gateway-service:
+  #   container_name: gateway-service
+  #   image: ghcr.io/nullchefo/diploma-project-gateway-service:0.0.1-SNAPSHOT
+  #   environment:
+  #     - LOKI_URI=http://loki_social_media:3100/loki/api/v1/push
+  #     - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo_social_media:9411
+  #     - SPRING_DATA_REDIS_HOST=redis_social_media
+  #     - SERVER_PORT=9001
+  #     - MANAGEMENT_SERVER_PORT=9101
+  #   expose:
+  #     - "9001"
+  #   ports:
+  #     - "9001:9001"
+  #     - "9101:9101"
+
+
+
+  # ## Authorization-Service Docker Compose Config
+  # authorization-service:
+  #   container_name: auth-service
+  #   image: ghcr.io/nullchefo/diploma-project-authorization-service:0.0.1-SNAPSHOT
+  #   environment:
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_social_media:5432/project
+  #     - SPRING_DATASOURCE_USERNAME=postgres
+  #     - SPRING_DATASOURCE_PASSWORD=example_password
+  #     - SPRING_RABBITMQ_ADDRESSES=rabbitmq_social_media
+  #     - SPRING_RABBITMQ_PORT=15672
+  #     - SPRING_RABBITMQ_USERNAME=example_user
+  #     - SPRING_RABBITMQ_PASSWORD=example_password
+  #     - SERVER_PORT=9002
+  #     - MANAGEMENT_SERVER_PORT=9102
+  #     - LOKI_URI=http://loki_social_media:3100/loki/api/v1/push
+  #     - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo_social_media:9411
+  #   depends_on:
+  #     - rabbitmq
+  #   expose:
+  #     - "9002"
+  #   ports:
+  #     - "9002:9002"
+  #     - "9102:9102"

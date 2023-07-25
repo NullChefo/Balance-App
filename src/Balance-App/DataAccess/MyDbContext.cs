@@ -8,7 +8,13 @@ namespace Balance_App.DataAccess
 {
     public class MyDbContext : DbContext
     {
-        private string connectionString = "Host=localhost:5432;Database=balanceapp;Username=applogin;Password=1234";
+        private readonly IConfiguration _configuration;
+
+        public MyDbContext(DbContextOptions<MyDbContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
         
         public DbSet<User> Users { get; set; }
         public DbSet<Balance> Balance { get; set; }
@@ -23,10 +29,11 @@ namespace Balance_App.DataAccess
         }
 
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
             optionsBuilder.UseNpgsql(connectionString);
-           
         }
 
     

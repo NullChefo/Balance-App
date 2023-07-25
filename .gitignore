@@ -7,6 +7,16 @@ src/Balance-App/.idea/
 src/Balance-App/.DS_Store
 src/.DS_Store
 
+src/.idea
+src/.vscode
+
+.vscode
+.idea
+
+src/Balance-App/.vscode
+
+
 img/.DS_Store
 
 
+platform/grafana/dashboards/jvm.json
