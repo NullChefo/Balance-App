@@ -1,22 +1,22 @@
-# name: Publish
+name: Publish
 
-# on:
-#   push:
-#     branches:
-#       - main # Change this to your main branch name
+on:
+  push:
+    branches:
+      - main # Change this to your main branch name
 
-# jobs:
-#   publish:
-#     runs-on: ubuntu-latest
+jobs:
+  publish:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Setup .NET
-#         uses: actions/setup-dotnet@v1
-#         with:
-#           dotnet-version: '7.0.x' # Replace with your desired .NET version
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x' # Replace with your desired .NET version
 
 #       - name: Restore dependencies
 #         run: dotnet restore  ./src/
