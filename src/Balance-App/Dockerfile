@@ -6,7 +6,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Balance-App.csproj", "Balance-App/"]
-RUN dotnet restore "Balance-App.csproj"
+RUN dotnet restore "Balance-App/Balance-App.csproj"
 WORKDIR "/src/Balance-App"
 COPY . .
 RUN dotnet build "Balance-App.csproj" -c Release -o /app/build
